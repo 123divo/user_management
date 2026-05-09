@@ -1,4 +1,4 @@
-import { mkdir, copyFile, writeFile } from "node:fs/promises";
+import { mkdir, copyFile, writeFile, cp } from "node:fs/promises";
 import { join } from "node:path";
 
 const root = process.cwd();
@@ -15,6 +15,7 @@ await mkdir(distDir, { recursive: true });
 
 const filesToCopy = ["index.html", "styles.css", "app.js", "supabase-config.js"];
 await Promise.all(filesToCopy.map((file) => copyFile(join(root, file), join(distDir, file))));
+await cp(join(root, "icon"), join(distDir, "icon"), { recursive: true });
 
 const envJs = `window.__ENV__ = {
   NEXT_PUBLIC_SUPABASE_URL: ${JSON.stringify(process.env.NEXT_PUBLIC_SUPABASE_URL)},
