@@ -1,10 +1,16 @@
 cd /d D:\Programming\user_management
-echo "# user_management" >> README.md
 git init
 git config --global user.name "Doan Hung"
 git config --global user.email "doanhung123@gmail.com"
-git add README.md
+git add .
 git commit -m "first commit"
 git branch -M main
 git remote add origin https://github.com/123divo/user_management.git
+git pull origin main --allow-unrelated-histories
 git push -u origin main
+
+//Update
+cd /d D:\Programming\user_management
+git add .
+git commit -m "update"
+git push
