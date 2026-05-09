@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <strong>User Management</strong>
+        <span>Supabase: extension_user + py_app_user</span>
+      </div>
+      <button id="refresh-btn" class="icon-button square" type="button" aria-label="Tải lại">Tải lại</button>
+    </header>
+
+    <section class="content-area">
+      <div class="content-header">
+        <label class="search-box">
+          <input id="search-input" type="text" placeholder="Tìm theo email, role, device...">
+        </label>
+      </div>
+
+      <div class="tab-bar" role="tablist" aria-label="User tables">
+        <button id="tab-extension" class="tab-btn is-active" data-table="extension_user" role="tab" aria-selected="true" type="button">Extension</button>
+        <button id="tab-py" class="tab-btn" data-table="py_app_user" role="tab" aria-selected="false" type="button">Python App</button>
+      </div>
+
+      <section class="data-panel users-panel">
+        <div class="users-toolbar">
+          <strong id="status-text">Đang tải dữ liệu...</strong>
+        </div>
+        <div class="users-table-wrapper">
+          <table class="users-table">
+            <thead id="table-head"></thead>
+            <tbody id="table-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./env.js"></script>
+  <script src="./supabase-config.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

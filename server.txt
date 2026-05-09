@@ -1,0 +1,2 @@
+cd /d D:\Programming\user_management
+python -m http.server 5500
