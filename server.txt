@@ -1,2 +1,35 @@
 cd /d D:\Programming\user_management
-python -m http.server 5500
+python -m http.server 3500
+
+Các port phổ biến dễ bị xung đột
+Port	Thường dùng cho
+80	HTTP mặc định
+443	HTTPS
+21	FTP
+22	SSH
+25	SMTP mail
+53	DNS
+1433	SQL Server
+1521	Oracle DB
+27017	MongoDB
+3306	MySQL
+5432	PostgreSQL
+6379	Redis
+8080	Web app phổ biến
+8000	Python/Django/FastAPI hay dùng
+5000	Flask
+3000	React/Node/Vite hay dùng
+5173	Vite default
+4200	Angular
+8888	Jupyter
+
+Nếu bạn đang chạy nhiều tool/frontend/backend thì nên:
+
+Tránh đặc biệt:
+3000
+5000
+8000
+8080
+5173
+
+vì rất hay bị chiếm.
