@@ -25,6 +25,7 @@ let rowsByTable = { extension_user: [], py_app_user: [] };
 let filteredRows = [];
 let editingRowKey = null;
 let columnWidths = {};
+const COLUMN_WIDTHS_KEY = "user-management:column-widths";
 
 function setStatus(message) {
   statusText.textContent = message;
@@ -131,6 +132,20 @@ function getColumnWidth(tableName, columnKey) {
 function setColumnWidth(tableName, columnKey, widthPx) {
   if (!columnWidths[tableName]) columnWidths[tableName] = {};
   columnWidths[tableName][columnKey] = Math.max(60, Math.round(widthPx));
+  try {
+    window.localStorage.setItem(COLUMN_WIDTHS_KEY, JSON.stringify(columnWidths));
+  } catch (_) {}
+}
+
+function loadColumnWidths() {
+  try {
+    const raw = window.localStorage.getItem(COLUMN_WIDTHS_KEY);
+    if (!raw) return;
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed === "object") {
+      columnWidths = parsed;
+    }
+  } catch (_) {}
 }
 
 function getCellStyle(tableName, columnKey) {
@@ -528,6 +543,7 @@ tableBody.addEventListener("click", async (event) => {
 });
 
 (async () => {
+  loadColumnWidths();
   switchTab("extension_user");
   try {
     await refreshActiveTable();

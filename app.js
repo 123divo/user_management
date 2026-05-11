@@ -25,6 +25,7 @@ let rowsByTable = { extension_user: [], py_app_user: [] };
 let filteredRows = [];
 let editingRowKey = null;
 let columnWidths = {};
+const COLUMN_WIDTHS_KEY = "user-management:column-widths";
 
 function setStatus(message) {
   statusText.textContent = message;
@@ -131,6 +132,20 @@ function getColumnWidth(tableName, columnKey) {
 function setColumnWidth(tableName, columnKey, widthPx) {
   if (!columnWidths[tableName]) columnWidths[tableName] = {};
   columnWidths[tableName][columnKey] = Math.max(60, Math.round(widthPx));
+  try {
+    window.localStorage.setItem(COLUMN_WIDTHS_KEY, JSON.stringify(columnWidths));
+  } catch (_) {}
+}
+
+function loadColumnWidths() {
+  try {
+    const raw = window.localStorage.getItem(COLUMN_WIDTHS_KEY);
+    if (!raw) return;
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed === "object") {
+      columnWidths = parsed;
+    }
+  } catch (_) {}
 }
 
 function getCellStyle(tableName, columnKey) {
@@ -281,7 +296,6 @@ function renderExtensionTable() {
     return acc;
   }, new Map());
 
-  let runningIndex = 0;
   tableBody.innerHTML = [...grouped.entries()]
     .map(([groupName, groupRows]) => {
       const groupHeader = `
@@ -294,8 +308,7 @@ function renderExtensionTable() {
       `;
 
       const rowsMarkup = groupRows
-        .map((row) => {
-          runningIndex += 1;
+        .map((row, index) => {
           const rowKey = buildRowKey(activeTable, row);
           const isEditing = editingRowKey === rowKey;
 
@@ -323,7 +336,7 @@ function renderExtensionTable() {
 
           return `
             <tr data-row-key="${escapeHtml(rowKey)}">
-              <td${getCellStyle(activeTable, "__no")}>${runningIndex}</td>
+              <td${getCellStyle(activeTable, "__no")}>${index + 1}</td>
               <td${getCellStyle(activeTable, "email")}>${emailCell}</td>
               <td${getCellStyle(activeTable, "role")}>${roleCell}</td>
               <td${getCellStyle(activeTable, "expire_date")}>${expireCell}</td>
@@ -528,6 +541,7 @@ tableBody.addEventListener("click", async (event) => {
 });
 
 (async () => {
+  loadColumnWidths();
   switchTab("extension_user");
   try {
     await refreshActiveTable();
